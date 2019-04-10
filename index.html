@@ -6,12 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Green Thumbs</title>
-    <link rel="stylesheet" type="text/css" href="assets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
 </head>
 
 <body>
-
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="#">
+                <p><input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" /></p>
+                <p><input type="submit" id="submit" value="Search" class="form-control btn btn-primary w100"></p>
+            </form>
+            <div id="videoDisply"></div>
+        </div>
+    </div>
 </body>
 
 <script src="https://code.jquery.com/jquery.js"></script>

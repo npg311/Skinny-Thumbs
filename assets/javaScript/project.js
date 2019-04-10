@@ -1,68 +1,26 @@
-console.log($);
+$("#submit").on("click", function (event) {
+    event.preventDefault();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function tplawesome(e,t){res=e;for(var n=0;n<t.length;n++){res=res.replace(/\{\{(.*?)\}\}/g,function(e,r){return t[n][r]})}return res}
-
-// $(function() {
-//     $("form").on("submit", function(e) {
-//        e.preventDefault();
-//        // prepare the request
-//        var request = gapi.client.youtube.search.list({
-//             part: "snippet",
-//             type: "video",
-//             q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
-//             maxResults: 3,
-//             order: "viewCount",
-//             publishedAfter: "2015-01-01T00:00:00Z"
-//        }); 
-//        // execute the request
-//        request.execute(function(response) {
-//           var results = response.result;
-//           $("#results").html("");
-//           $.each(results.items, function(index, item) {
-//             $.get("tpl/item.html", function(data) {
-//                 $("#results").append(tplawesome(data, [{"title":item.snippet.title, "videoid":item.id.videoId}]));
-//             });
-//           });
-//           resetVideoHeight();
-//        });
-//     });
+    // clear result
+    $('#videoDisply').html("");
     
-//     $(window).on("resize", resetVideoHeight);
-// });
-
-// function resetVideoHeight() {
-//     $(".video").css("height", $("#results").width() * 9/16);
-// }
-
-// function init() {
-//     gapi.client.setApiKey("AIzaSyAzKhulzTYO2S90UlvOBDQeh20jnsRa67g");
-//     gapi.client.load("youtube", "v3", function() {
-
-//     });
-// }
+    // get form input
+    var drinkSearch = $("#search").val().trim();
+    // run get request on api
+    var queryURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + drinkSearch + "&type=video&key=AIzaSyAzKhulzTYO2S90UlvOBDQeh20jnsRa67g";
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+          
+        var result = response.items;
+        
+        for (var i = 0; i < result.length; i++) {
+            var ytID = "https://www.youtube.com/embed/" + result[i].id.videoId;        
+            var videoId = $('<iframe>').attr('src', ytID);
+            var title = $('<h3>').text(result[i].snippet.title);
+            $('#videoDisply').prepend(title, videoId);
+        }
+   
+    });
+});

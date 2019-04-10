@@ -5,14 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Green Thumbs</title>
+    <title>Sip n' share</title>
     <link rel="stylesheet" type="text/css" href="assets/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <link href="assets/javaScript/project.js">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
 </head>
 
 <div class="header">
-    <a href="#default" class="logo">Sippin n' Share</a>
+    <a href="#default" class="logo">Sip n' Share</a>
     <div class="header-right">
         <a class="active" href="#home">Home</a>
         <a href="#contact">Contact</a>
@@ -21,163 +25,44 @@
 </div>
 
 <body>
-
     <div class="bg"></div>
-
     <p class="py-5 text-center"></p>
 
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="panel panel-success">
-                    <div class="panel-heading">Cocktail Data Base</div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>search drink recipe</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="drinkRecipes">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="panel panel-info">
-                    <div class="panel-heading">find a drink tutorial </div>
-                    <div class="panel-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipeSearch">Name of Drink</label>
-                                <input type="text" class="form-control" id="recipeSearch" placeholder="Cocktails">
-                            </div>
-                           
-                            
-                            <button type="submit" class="btn btn-primary" id="findNewDrink">Search Drink</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid">    
+    <div class="row">
+        <div class="col-lg-6" style="background-color: aqua"> 
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">CocktailDB </h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">drink list</p>
+          <a href="#" class="card-link">CocktailDB</a>
+          <a href="#" class="card-link">Search bar link'd to CocktailDB</a>
         </div>
+      </div>
+    </div>
+    <div class="col-lg-6" style="background-color: red">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">YouTube Search </h5>
+          <h6 class="card-subtitle mb-2 text-muted">building cocktails</h6>
+          <p class="card-text">drink list</p>
+          <a href="#" class="card-link">YouTube</a>
+          <a href="#" class="card-link">Search bar link'd to YouTube</a>
+        </div>
+      </div>
+    </div>
     </div>
 
+    
 
-    <script type="text/javascript">
-    function displayDrinks() {
- 	$("#your-search-results").empty();
-	var pins = {};
-	var rating='', gifURLstill='', pinscore=0, i;
-    var results = $(this).attr("data-name");
-        var queryURL = "https://api.pinterest.com/v1/me/pins/?" + "AuTwntNjP9M-T30Vu_537mFHKGhNFZLzZplff6RFv40N_AC7jgZGQDAAAMFtRcAKlIeApPkAAAAA&&fields&&limit"
-   // access_token=AuTwntNjP9M-T30Vu_537mFHKGhNFZLzZplff6RFv40N_AC7jgZGQDAAAMFtRcAKlIeApPkAAAAA
-   // &fields=id,creator,note
-   // &limit=1
-   $.ajax({
-               "url": queryURL,
-               "method": "get"
-			})
-			.done(function (response) {
-				responseX=JSON.stringify(response.data);		
-				pins=JSON.parse(responseX);	
-				for (var i = 0; i < pins.length; i++){
-					rating= pins[i].rating;
-					gifURLstill = pins[i].images.fixed_height_still.url;
-					gifURLanimate=pins[i].images.fixed_height.url;
-					pinscore = pins[i]._score;
-					gifTitle = pins[i].title;
-                    var gifDiv = $("<div class= \"gipheee\">");
-                    var ratingHTML = $("<p>").text("Giphy Rating: " + rating);
-					var scoreHTML = $("<p>").text("Giphy Score: " + pinscore);
-					var titleHTML = $("<p>").text(gifTitle);
-					var image = $("<img>");
-                    image.attr("src", gifURLstill);
-                    image.attr("data-still", gifURLstill);
-                    image.attr("data-animate", gifURLanimate);
-					image.attr("data-state", "still");
-					image.addClass("giphy");
-                   	gifDiv.append(image);
-					gifDiv.append(titleHTML);
-                   	gifDiv.append(ratingHTML);
-                   	gifDiv.append(scoreHTML);
-                   $("#your-search-results").append(gifDiv);				
-				}
-			return pins;
-		});
-    }
-
-    function renderButton() {
- 	$("#your-search-results").empty();
-   for (var i = 0; i < moods.length; i++) {
-        var j = $("<button>");
-        	j.addClass("gif-btn");
-            j.attr("data-name", moods[i]);
-            j.text(moods[i]);
-         $("#moodButtons").append(j);
-      }
- }
- 
-function addMoodButton(arrayToUse, classToAdd, areaToAddTo) {
-    $(areaToAddTo).empty();
-    for (var i = 0; i < arrayToUse.length; i++) {
-      var a = $("<button>");
-      a.addClass(classToAdd);
-      a.attr("data-name", arrayToUse[i]);
-      a.text(arrayToUse[i]);
-      $(areaToAddTo).append(a);
-    }
-
- }
-   
- //play pause
-function animate() {
-     var state = $(this).attr("data-state");
-     if (state === "still") {
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
-     }else{
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-     }
-}
-
-$("#add-mood").on("click", function(event) {
-    event.preventDefault();
-    var newMood = $("input").val();
-    moods.push(newMood);
-    addMoodButton(moods, "gif-btn", "#moodButtons");
- });
- 
-var moods = ["happy", "sad", "wild", "tired", "frusterated", "scared", "joyful", "focused", "nervous", "silly"];
-
-$(document).on("click", ".gif-btn", displayDrinks); 
-$(document).on("click", ".giphy", animate);
-
-$(document).ready(function() {
-	renderButton();
-});
-    </script>
-
-
-    <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
-
-    <ul id="myMenu">
-        <li><a href="#">Vodka</a></li>
-        <li><a href="#">Gin</a></li>
-        <li><a href="#">Rum</a></li>
-        <li><a href="#">Tequila</a></li>
-        <li><a href="#">Cordials</a></li>
-        <li><a href="#">Shots</a></li>
-
-    </ul>
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-    </script>
-    <!--script src="assets/javascript/project.js">
-    </script> -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="panel panel-success"></div>
+            <div class="panel-heading"> Let's make a drink</div>
+                <h1>what sounds yummy???</h1>
+        </div>
+    </div>
 </body>
 
 </html>

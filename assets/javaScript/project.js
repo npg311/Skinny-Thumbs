@@ -11,8 +11,7 @@ $("#submit").on("click", function (event) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
-          
+    }).then(function (response) {   
         var result = response.items;
         
         for (var i = 0; i < result.length; i++) {

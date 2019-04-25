@@ -5,34 +5,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Green Thumbs</title>
+    <title>Sip n' share</title>
+    <!-- <link href="assets/javaScript/project.js"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <style>
+
+    </style>
 </head>
 
-<div class="header">
-    <a href="#default" class="logo">CompanyLogo</a>
-    <div class="header-right">
-      <a class="active" href="#home">Home</a>
-      <a href="#contact">Contact</a>
-      <a href="#about">About</a>
-    </div>
-  </div>
-
 <body>
+
+  
+   
+
+    <div class="header">
+        <img src="assets/images/See-in-Spirits-logo.png" style="max-height:90px; max-width:90px;">
+                <div class="header-right">
+
+            <a class="active" href="./index.html">Home</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./aboutUs.html">About</a>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12" align="center">
+            <h1 id="name"></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Search A Drink </h3>
+                    <h6 class="card-subtitle mb-2">Lets find your perfect cocktail!</h6>
+                    <form method="GET">
+                        <input type="text" name="" id="search" placeholder="your text here">
+                        <input type="submit" value="Search" id="submit">
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div id="videoDisplay"></div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Ingredients</h3>
+                    <ul id="Ingredients"></ul>
+                    <h3>Instructions</h3>
+                    <p id="instructions"></p>
+                    <h3>Glass Type</h3>
+                    <p id="glassType"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3" align="center">
+            <img id="icon" style="width:250px; height:250px;">
+        </div>
+    </div>
     
+</div>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script> -->
+    <!--<script src=“https://apis.google.com/js/api.js“></script> -->
+    <script>
+        $("#submit").on("click", function (event) {
+            event.preventDefault();
+            // clear result
+            $('#videoDisplay').html("");
 
-    <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
+            //clear div for ingredients
+            // get form input
+            var drinkSearch = $("#search").val().trim();
+            console.log(drinkSearch);
+            // run get request on api
+            var queryURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + drinkSearch + "&maxResults=2&type=video&key=AIzaSyAzKhulzTYO2S90UlvOBDQeh20jnsRa67g";
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).done(function (response) {
+                var result = response.items;
+                console.log(result);
+                for (var i = 0; i < result.length; i++) {
+                    //console.log(result[i])
+                    var ytID = "https://www.youtube.com/embed/" + result[i].id.videoId;
+                    var videoId = $('<iframe>').attr('src', ytID);
+                    //var title = $('<h3>').text(result[i].snippet.title);
+                    $('#videoDisplay').prepend(videoId);
+                }
 
-    <ul id="myMenu">
-        <li><a href="#">Vegetables</a></li>
-        <li><a href="#">Fruits</a></li>
-        <li><a href="#">Flowers</a></li>
-        <li><a href="#">Plants</a></li>
-        <li><a href="#">Bushes</a></li>
-        <li><a href="#">Trees</a></li>
+            });
+            $.getJSON(
+                "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + drinkSearch,
+                function (data) {
+                    //console.log(data.drinks.length);
+                    //length to array
+                    // [i] to [0]
 
-    </ul>
+                    var icon = data.drinks[0].strDrinkThumb;
+                    var name = data.drinks[0].strDrink;
+                    var instructions = data.drinks[0].strInstructions;
+                    var glassType = data.drinks[0].strGlass;
 
+                    var ingredients = [];
+                    for (var j = 1; j <= 15; j++) {
+                        if (data.drinks[0]["strIngredient" + j] === "") break;
+                        ingredients.push(data.drinks[0]["strIngredient" + j] + " " + data.drinks[0]["strMeasure" + j]);
+                    }
+
+                    ingredients.forEach(function (ingredient) {
+                        var li = $("<li>")
+                        li.text(ingredient)
+                        $("#Ingredients").append(li);
+
+                    });
+                    console.log(ingredients);
+                    $("#icon").attr("src", icon);
+                    $("#name").text("" + name);
+                    $("#glassType").text(glassType);
+                    $("#instructions").text(instructions);
+
+
+                }
+            );
+        });
+    </script>
 </body>
 
 </html>
